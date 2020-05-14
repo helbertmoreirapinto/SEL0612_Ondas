@@ -1,3 +1,4 @@
+#DEUS EH AMOR
 import math
 import scipy.constants as spc
 
