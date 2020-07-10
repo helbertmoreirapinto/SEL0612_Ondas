@@ -44,7 +44,7 @@ public class Exercicios {
 		DataGraphic[] data = new DataGraphic[1];
 		data[0] = new DataGraphic(Vp, "Phase Velocity Error", -1);
 
-		Graphics.plot("Fig2.2", true, "N lambda", "nome y", data);
+		Graphics.plot("Fig2.2", true, "N lambda", "Phase Velocity Error", data);
 	}
 
 	public static void fig_2_4() {
@@ -61,7 +61,7 @@ public class Exercicios {
 		u = UtilScalarWave.FDTD(S, I, N, 0);
 		data[1] = new DataGraphic(u[(int) (190 / S0)], "S = 1", -1);
 
-		Graphics.plot("Fig2.4", false, "Grid i coordinate", "nome y", data);
+		Graphics.plot("Fig2.4", false, "Grid i coordinate", "Wavefunction", data);
 
 	}
 
@@ -75,7 +75,7 @@ public class Exercicios {
 		DataGraphic[] data = new DataGraphic[1];
 		data[0] = new DataGraphic(u[250], "Wavefunction", -1);
 
-		Graphics.plot("Fig2.5", false, "Grid i coordinate", "nome y", data);
+		Graphics.plot("Fig2.5", false, "Grid i coordinate", "Wavefunction", data);
 	}
 
 	public static void fig_2_6() {
@@ -95,8 +95,8 @@ public class Exercicios {
 		data2[1] = new DataGraphic(v[1], "n = 210", -1);
 		data[2] = new DataGraphic(u[220], "n = 220", -1);
 		data2[2] = new DataGraphic(v[2], "n = 220", -1);
-		Graphics.plot("Fig2.6a", false, "Grid i coordinate", "nome y", data);
-		Graphics.plot("Fig2.6b", false, "Grid i coordinate", "nome y", data2);
+		Graphics.plot("Fig2.6a", false, "Grid i coordinate", "Wavefunction", data);
+		Graphics.plot("Fig2.6b", false, "Grid i coordinate", "Wavefunction", data2);
 	}
 
 	public static void fig_2_7() {
@@ -114,8 +114,8 @@ public class Exercicios {
 		data2[0] = new DataGraphic(v[0], "n = 190", -1);
 		data[1] = new DataGraphic(u[200], "n = 200", -1);
 		data2[1] = new DataGraphic(v[1], "n = 200", -1);
-		Graphics.plot("Fig2.7a", false, "Grid i coordinate", "nome y", data);
-		Graphics.plot("Fig2.7b", false, "Grid i coordinate", "nome y", data2);
+		Graphics.plot("Fig2.7a", false, "Grid i coordinate", "Wavefunction", data);
+		Graphics.plot("Fig2.7b", false, "Grid i coordinate", "Wavefunction", data2);
 	}
 
 	private static double[] vector_range(int begin, int end, int div) {
@@ -172,7 +172,9 @@ public class Exercicios {
 		n2.setRange(0, 2);
 		plot.setRangeAxis(0, n1);
 		plot.setRangeAxis(1, n2);
-		plot.setDomainAxis(new NumberAxis(""));
+		NumberAxis n = new NumberAxis();
+		n.setRange(1,10);
+		plot.setDomainAxis(n);
 
 		// Map the data to the appropriate axis
 		plot.mapDatasetToRangeAxis(0, 0);
@@ -181,7 +183,7 @@ public class Exercicios {
 		// generate the chart
 		String filepath = String.format("teste.png");
 		try (OutputStream outstream = new FileOutputStream(filepath)) {
-			JFreeChart chart = new JFreeChart("Fig2.1", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+			JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 			chart.setBackgroundPaint(Color.WHITE);
 			ChartUtilities.writeChartAsPNG(outstream, chart, 1024, 768);
 		} catch (Exception e) {
