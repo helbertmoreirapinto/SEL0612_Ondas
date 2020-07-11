@@ -33,14 +33,29 @@ Hx=zeros(xdim,ydim);
 epsilon=epsilon0*ones(xdim,ydim);
 mu=mu0*ones(xdim,ydim);
 
-sigma=4e-4*ones(xdim,ydim);
-sigma_star=4e-4*ones(xdim,ydim);
+min_condut=1e-4;
+max_condut=5;
+
+% null condutivity
+sigma=zeros(xdim,ydim);
+sigma_star=zeros(xdim,ydim);
+
+% constant condutivity
+sigma=min_condut*ones(xdim,ydim);
+sigma_star=min_condut*ones(xdim,ydim);
+
+% linear condutivity
+for i=1:1:xdim
+    for j=1:1:ydim
+        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
+    end
+end
 
 amplit=1;
 frequency=1.5e+13;
 gaussian=0;
-sine=0;
-impulse=1;
+sine=1;
+impulse=0;
 
 A=((mu-0.5*deltat*sigma_star)./(mu+0.5*deltat*sigma_star)); 
 B=(deltat/delta)./(mu+0.5*deltat*sigma_star);
@@ -105,13 +120,13 @@ for n=1:1:time_tot
         Ez(xsource,ysource)=0;
     end
     
-    mesh(x,y,Hx,'linewidth',1);
-    zlabel('Hx \rightarrow');
+    mesh(x,y,Ez,'linewidth',1);
+    zlabel('Ez \rightarrow');
     xlabel('X \rightarrow');
     ylabel('\leftarrow Y');
     titlestring=['2D FDTD at time step =',num2str(n)];
     title(titlestring,'color','k');
-    axis([0 xdim 0 ydim -0.2 0.2]);
+    axis([0 xdim 0 ydim -1 1]);
     
     getframe;
 end
