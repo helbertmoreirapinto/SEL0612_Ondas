@@ -47,6 +47,22 @@ public class Exercicios {
 		Graphics.plot("Fig2.2", true, "N lambda", "Phase Velocity Error", data);
 	}
 
+	public static void fig_2_3(double d, int i) {
+		DataGraphic[] data = new DataGraphic[2];
+		double S0 = 0.5;
+		int I = 200;
+		int N = (int) (I / S0);
+		double S[] = init_vector(I - 1, S0);
+		double[][] u = UtilScalarWave.FDTD(S, I, N, 3);
+		data[0] = new DataGraphic(u[(int) (190 / S0)], "S = 0.99", -1);
+
+		S0 = 1;
+		S = init_vector(I - 1, S0);
+		u = UtilScalarWave.FDTD(S, I, N, 3);
+		data[1] = new DataGraphic(u[(int) (190 / S0)], "S = 1", -1);
+		Graphics.plot("Fig2.3", false, "Grid i coordinate", "Wavefunction", data);
+	}
+
 	public static void fig_2_4() {
 		DataGraphic[] data = new DataGraphic[2];
 		double S0 = 0.5;
@@ -54,7 +70,7 @@ public class Exercicios {
 		int N = (int) (I / S0);
 		double S[] = init_vector(I - 1, S0);
 		double[][] u = UtilScalarWave.FDTD(S, I, N, 0);
-		data[0] = new DataGraphic(u[(int) (190 / S0)], "S = 0.5", -1);
+		data[0] = new DataGraphic(u[(int) (190 / S0)], "S = 0.99", -1);
 
 		S0 = 1;
 		S = init_vector(I - 1, S0);
@@ -105,9 +121,9 @@ public class Exercicios {
 		double S[] = init_vector(I, 1);
 		S[89] = 1.075;
 		double u[][] = UtilScalarWave.FDTD(S, I, N, 2);
-		double v[][] = new double[2][40];
+		double v[][] = new double[2][35];
 		for (int i = 0; i < 2; i++)
-			for (int j = 0; j < 40; j++)
+			for (int j = 0; j < 35; j++)
 				v[i][j] = u[190 + 10 * i][70 + j];
 		DataGraphic[] data = new DataGraphic[2], data2 = new DataGraphic[2];
 		data[0] = new DataGraphic(u[190], "n = 190", -1);
@@ -173,7 +189,7 @@ public class Exercicios {
 		plot.setRangeAxis(0, n1);
 		plot.setRangeAxis(1, n2);
 		NumberAxis n = new NumberAxis();
-		n.setRange(1,10);
+		n.setRange(1, 10);
 		plot.setDomainAxis(n);
 
 		// Map the data to the appropriate axis
@@ -190,4 +206,5 @@ public class Exercicios {
 			System.err.println("Erro: " + e.getMessage());
 		}
 	}
+
 }
