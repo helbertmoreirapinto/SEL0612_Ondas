@@ -1,19 +1,27 @@
 clear all;
 clc;
 
-xdim=200;
-ydim=200;
+c=3e+8;
+freq_in=3e7;
+eps_r = 1;
+lamda = (c/freq_in)/sqrt(eps_r);
 
-time_tot=350;
+xdim=200;
+dx = lamda/10;
+x = 0:dx:xdim-dx;
+
+ydim=200;
+dy = lamda/10;
+y = 0:dy:ydim-dy;
+
+time_tot=1000;
 
 xsource=100;
 ysource=100;
-
 S=1/(2^0.5);
 
 epsilon0=(1/(36*pi))*1e-9;
 mu0=4*pi*1e-7;
-c=3e+8;
 
 delta=1e-6;
 deltat=S*delta/c;
@@ -28,11 +36,11 @@ mu=mu0*ones(xdim,ydim);
 sigma=4e-4*ones(xdim,ydim);
 sigma_star=4e-4*ones(xdim,ydim);
 
-amplit=50;
+amplit=1;
 frequency=1.5e+13;
 gaussian=0;
 sine=0;
-impulse=0;
+impulse=1;
 
 A=((mu-0.5*deltat*sigma_star)./(mu+0.5*deltat*sigma_star)); 
 B=(deltat/delta)./(mu+0.5*deltat*sigma_star);
@@ -97,10 +105,13 @@ for n=1:1:time_tot
         Ez(xsource,ysource)=0;
     end
     
-    imagesc(delta*(1:1:xdim)*1e+6,(1e+6*delta*(1:1:ydim))',Hy',[-1,1]);colorbar;
-    title(['\fontsize{20}Colour-scaled image plot of Ez in a spatial domain with PEC boundary and at time = ',num2str(round(n*deltat*1e+15)),' fs']); 
-    xlabel('x (in um)','FontSize',20);
-    ylabel('y (in um)','FontSize',20);
-    set(gca,'FontSize',20);
+    mesh(x,y,Hx,'linewidth',1);
+    zlabel('Hx \rightarrow');
+    xlabel('X \rightarrow');
+    ylabel('\leftarrow Y');
+    titlestring=['2D FDTD at time step =',num2str(n)];
+    title(titlestring,'color','k');
+    axis([0 xdim 0 ydim -0.2 0.2]);
+    
     getframe;
 end
