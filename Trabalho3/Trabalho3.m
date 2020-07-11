@@ -2,29 +2,32 @@ clear all;
 clc;
 
 c=3e+8;
+S=1/sqrt(2);
+%S=(1+1/200)/sqrt(2);
+
+delta=1e-6;
+deltat=S*delta/c;
+
 freq_in=3e7;
 eps_r = 1;
 lamda = (c/freq_in)/sqrt(eps_r);
 
 xdim=200;
-dx = lamda/10;
-x = 0:dx:xdim-dx;
-
 ydim=200;
-dy = lamda/10;
-y = 0:dy:ydim-dy;
+
+deltax = lamda/10;
+x = 0:deltax:xdim-deltax;
+
+deltay = lamda/10;
+y = 0:deltay:ydim-deltay;
 
 time_tot=1000;
-
-xsource=100;
-ysource=100;
-S=1/(2^0.5);
 
 epsilon0=(1/(36*pi))*1e-9;
 mu0=4*pi*1e-7;
 
-delta=1e-6;
-deltat=S*delta/c;
+xsource=100;
+ysource=100;
 
 Ez=zeros(xdim,ydim);
 Hy=zeros(xdim,ydim);
@@ -41,20 +44,20 @@ sigma=zeros(xdim,ydim);
 sigma_star=zeros(xdim,ydim);
 
 % constant condutivity
-sigma=min_condut*ones(xdim,ydim);
-sigma_star=min_condut*ones(xdim,ydim);
+%sigma=min_condut*ones(xdim,ydim);
+%sigma_star=min_condut*ones(xdim,ydim);
 
 % linear condutivity
-for i=1:1:xdim
-    for j=1:1:ydim
-        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
-    end
-end
+%for i=1:1:xdim
+%    for j=1:1:ydim
+%        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
+%    end
+%end
 
-amplit=1;
+amplit=100;
 frequency=1.5e+13;
-gaussian=0;
-sine=1;
+gaussian=1;
+sine=0;
 impulse=0;
 
 A=((mu-0.5*deltat*sigma_star)./(mu+0.5*deltat*sigma_star)); 
@@ -62,6 +65,9 @@ B=(deltat/delta)./(mu+0.5*deltat*sigma_star);
                           
 C=((epsilon-0.5*deltat*sigma)./(epsilon+0.5*deltat*sigma)); 
 D=(deltat/delta)./(epsilon+0.5*deltat*sigma);                     
+
+V = VideoWriter('simulation');
+open(V);
 
 for n=1:1:time_tot
     
@@ -120,13 +126,16 @@ for n=1:1:time_tot
         Ez(xsource,ysource)=0;
     end
     
-    mesh(x,y,Ez,'linewidth',1);
-    zlabel('Ez \rightarrow');
+    mesh(x,y,Hy,'linewidth',1);
+    zlabel('Hy \rightarrow');
     xlabel('X \rightarrow');
     ylabel('\leftarrow Y');
     titlestring=['2D FDTD at time step =',num2str(n)];
     title(titlestring,'color','k');
     axis([0 xdim 0 ydim -1 1]);
     
-    getframe;
+    F = getframe(gcf);
+    writeVideo(V,F);
 end
+
+close(V);
