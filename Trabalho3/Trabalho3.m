@@ -2,6 +2,8 @@ clear all;
 clc;
 
 c=3e+8;
+
+% Select Courant stability factor
 S=1/sqrt(2);
 %S=(1+1/200)/sqrt(2);
 
@@ -36,6 +38,7 @@ Hx=zeros(xdim,ydim);
 epsilon=epsilon0*ones(xdim,ydim);
 mu=mu0*ones(xdim,ydim);
 
+% Eletrichal condutivity
 min_condut=1e-4;
 max_condut=5;
 
@@ -56,6 +59,8 @@ sigma_star=zeros(xdim,ydim);
 
 amplit=1;
 frequency=1.5e+13;
+
+% Select source
 gaussian=0;
 sine=0;
 impulse=0;
@@ -96,11 +101,13 @@ for n=1:1:time_tot
         n21=ydim-1;
     end
     
+    % FDTD
     Hy(n1:n2,n11:n21)=A(n1:n2,n11:n21).*Hy(n1:n2,n11:n21)+B(n1:n2,n11:n21).*(Ez(n1+1:n2+1,n11:n21)-Ez(n1:n2,n11:n21));
     Hx(n1:n2,n11:n21)=A(n1:n2,n11:n21).*Hx(n1:n2,n11:n21)-B(n1:n2,n11:n21).*(Ez(n1:n2,n11+1:n21+1)-Ez(n1:n2,n11:n21));
     
     Ez(n1+1:n2+1,n11+1:n21+1)=C(n1+1:n2+1,n11+1:n21+1).*Ez(n1+1:n2+1,n11+1:n21+1)+D(n1+1:n2+1,n11+1:n21+1).*(Hy(n1+1:n2+1,n11+1:n21+1)-Hy(n1:n2,n11+1:n21+1)-Hx(n1+1:n2+1,n11+1:n21+1)+Hx(n1+1:n2+1,n11:n21));
     
+    % Boundary conditions
     Ez(1:xdim,1)=0;
     Ez(1:xdim,ydim)=0;
     Ez(1,1:ydim)=0;
