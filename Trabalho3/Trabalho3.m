@@ -40,24 +40,24 @@ min_condut=1e-4;
 max_condut=5;
 
 % null condutivity
-sigma=zeros(xdim,ydim);
-sigma_star=zeros(xdim,ydim);
+%sigma=zeros(xdim,ydim);
+%sigma_star=zeros(xdim,ydim);
 
 % constant condutivity
-%sigma=min_condut*ones(xdim,ydim);
-%sigma_star=min_condut*ones(xdim,ydim);
+sigma=min_condut*zeros(xdim,ydim);
+sigma_star=min_condut*zeros(xdim,ydim);
 
 % linear condutivity
-%for i=1:1:xdim
-%    for j=1:1:ydim
-%        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
-%    end
-%end
+for i=1:1:xdim
+    for j=1:1:ydim
+        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
+    end
+end
 
-amplit=100;
+amplit=5;
 frequency=1.5e+13;
-gaussian=1;
-sine=0;
+gaussian=0;
+sine=1;
 impulse=0;
 
 A=((mu-0.5*deltat*sigma_star)./(mu+0.5*deltat*sigma_star)); 
