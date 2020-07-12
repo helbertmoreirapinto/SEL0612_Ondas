@@ -21,7 +21,7 @@ x = 0:deltax:xdim-deltax;
 deltay = lamda/10;
 y = 0:deltay:ydim-deltay;
 
-time_tot=1000;
+time_tot=100;
 
 epsilon0=(1/(36*pi))*1e-9;
 mu0=4*pi*1e-7;
@@ -40,24 +40,24 @@ min_condut=1e-4;
 max_condut=5;
 
 % null condutivity
-%sigma=zeros(xdim,ydim);
-%sigma_star=zeros(xdim,ydim);
+sigma=zeros(xdim,ydim);
+sigma_star=zeros(xdim,ydim);
 
 % constant condutivity
-sigma=min_condut*zeros(xdim,ydim);
-sigma_star=min_condut*zeros(xdim,ydim);
+%sigma=min_condut*zeros(xdim,ydim);
+%sigma_star=min_condut*zeros(xdim,ydim);
 
 % linear condutivity
-for i=1:1:xdim
-    for j=1:1:ydim
-        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
-    end
-end
+%for i=1:1:xdim
+%    for j=1:1:ydim
+%        sigma(i,j) = max_condut * sqrt((i-xsource).^2 + (j-ysource).^2);
+%    end
+%end
 
-amplit=5;
+amplit=1;
 frequency=1.5e+13;
 gaussian=0;
-sine=1;
+sine=0;
 impulse=0;
 
 A=((mu-0.5*deltat*sigma_star)./(mu+0.5*deltat*sigma_star)); 
@@ -126,8 +126,8 @@ for n=1:1:time_tot
         Ez(xsource,ysource)=0;
     end
     
-    mesh(x,y,Hy,'linewidth',1);
-    zlabel('Hy \rightarrow');
+    mesh(x,y,Hx,'linewidth',1);
+    zlabel('Hx \rightarrow');
     xlabel('X \rightarrow');
     ylabel('\leftarrow Y');
     titlestring=['2D FDTD at time step =',num2str(n)];
